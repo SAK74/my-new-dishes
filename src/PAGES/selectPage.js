@@ -32,7 +32,7 @@ export default function StartPage(){
     const history = useHistory();
 
     const isError = useMemo(() => {
-        const temp = {name: !Boolean(dishes.name), preparationTime: !dishes.preparationTime.split(':').some(Number), typeOfDish: dishes.typeOfDish === '- - - -'};
+        const temp = {name: !Boolean(dishes.name), preparationTime: !dishes.preparationTime.split(':').some(Number), typeOfDish: !Boolean(dishes.typeOfDish)};
         if(dishes.typeOfDish === 'pizza') return ({...temp, diameter: !Number(exParams.diameter) || exParams.diameter < 0, numOfSlices: !Boolean(exParams.numOfSlices)});
         return dishes.typeOfDish === 'sandwich' ? ({...temp, slicesOfBread: !Boolean(exParams.slicesOfBread)}) : temp;
     }, [dishes, exParams]);
@@ -110,7 +110,7 @@ export default function StartPage(){
             
             <Collapse
                 sx = {{m:3}}
-                in = {dishes.typeOfDish !== '- - - -'}
+                in = {Boolean(dishes.typeOfDish)}
                 orientation = 'horizontal'
             >
                 {dishes.typeOfDish === 'pizza' && <Box sx = {{'&>*': {mx: 2, mb: 1}}}> 

@@ -3,7 +3,7 @@ import { configureStore, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 const initialOrder = {
     name: "",
     preparationTime: "00:00:00",
-    typeOfDish: '- - - -'
+    typeOfDish: ''
 }
 
 export const sendRequest =  createAsyncThunk('sendRequest', async (_, {getState}) => {
