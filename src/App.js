@@ -58,7 +58,7 @@ export default function Main() {
       </Drawer>
       <Container maxWidth = "md" component = {Paper}
       sx = {{
-        // mu: 1,
+        mt: 1,
         display: 'flex', 
         flexDirection: 'column',
         alignItems: 'center'
