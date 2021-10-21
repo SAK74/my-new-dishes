@@ -14,15 +14,16 @@ export const sendRequest =  createAsyncThunk('sendRequest', async (_, {getState}
         },
         body: JSON.stringify(getState().order)
     });
-    if (resp && !resp.ok){
+    if (!resp.ok){
         const [mess] = Object.entries(await resp.json());
-        let err;
+        let err = `${mess[0].toUpperCase()}: ${mess[1]}`;
         switch(resp.status){
-            case 400: err = `Bad request! ${mess[0].toUpperCase()}: ${mess[1]}`; break;
-            default: err = `${resp.url} status: ${resp.status} ${resp.statusText}`;
+            case 400: err = 'Bad request! ' + err; break;
+            // ...
+            default: err = `${resp.status} ${resp.statusText} ` + err;
         }
         throw new Error(`Error... ${err}`);
-    } 
+    }
     return resp.json();
 });
 
