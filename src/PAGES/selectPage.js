@@ -24,27 +24,27 @@ const StyledSlider = styled(Slider)(({value}) => {
 });
 
 export default function StartPage(){
-    const {name: stateName, preparationTime: statePrepTime, typeOfDish: stateType, ...other} = useSelector(state => state.order);
-    const [dishes, setDishes] = useState({name: stateName, preparationTime: statePrepTime, typeOfDish: stateType});
+    const {name, preparation_time, type, ...other} = useSelector(state => state.order);
+    const [dishes, setDishes] = useState({name, preparation_time, type});
     const [exParams, setExParams] = useState(other);
     const [submited, setSubmited] = useState(false);
     const dispatch = useDispatch();
     const history = useHistory();
 
     const isError = useMemo(() => {
-        const temp = {name: !Boolean(dishes.name), preparationTime: !dishes.preparationTime.split(':').some(Number), typeOfDish: !Boolean(dishes.typeOfDish)};
-        if(dishes.typeOfDish === 'pizza') return ({...temp, diameter: !Number(exParams.diameter) || exParams.diameter < 0, numOfSlices: !Boolean(exParams.numOfSlices)});
-        return dishes.typeOfDish === 'sandwich' ? ({...temp, slicesOfBread: !Boolean(exParams.slicesOfBread)}) : temp;
+        const temp = {name: !Boolean(dishes.name), preparation_time: !dishes.preparation_time.split(':').some(Number), type: !Boolean(dishes.type)};
+        if(dishes.type === 'pizza') return ({...temp, diameter: !Number(exParams.diameter) || exParams.diameter < 0, no_of_slices: !Boolean(exParams.no_of_slices)});
+        return dishes.type === 'sandwich' ? ({...temp, slices_of_bread: !Boolean(exParams.slices_of_bread)}) : temp;
     }, [dishes, exParams]);
     
     const handleChange = ev => {
         const handleName = ev.target.name;
         const handleValue = ev.target.value;
         setDishes(prev => ({...prev, [handleName]: handleValue}));
-        if (handleName === 'typeOfDish') {
+        if (handleName === 'type') {
             let temp;
-            if(handleValue === 'pizza') temp = {numOfSlices: 1, diameter: 0}
-            else temp = handleValue === 'soup' ? {spicinessScale: 0} : {slicesOfBread: 1}
+            if(handleValue === 'pizza') temp = {no_of_slices: 1, diameter: 0}
+            else temp = handleValue === 'soup' ? {spiciness_scale: 0} : {slices_of_bread: 1}
             setExParams(temp);
         }                
     }
@@ -62,7 +62,7 @@ export default function StartPage(){
             setSubmited(true);
             return;
         }
-        const order = dishes.typeOfDish === 'pizza' ? {...exParams, diameter: Number(exParams.diameter)} : exParams;
+        const order = dishes.type === 'pizza' ? {...exParams, diameter: Number(exParams.diameter)} : exParams;
         dispatch(addOrder({...dishes, ...order}));
         history.push('/confirm');
     }
@@ -84,17 +84,17 @@ export default function StartPage(){
                     label = 'Preparation Time'
                     type = 'time'
                     inputProps = {{step: 1}}
-                    value = {dishes.preparationTime}
-                    name = 'preparationTime'
-                    error = {submited && isError.preparationTime}
+                    value = {dishes.preparation_time}
+                    name = 'preparation_time'
+                    error = {submited && isError.preparation_time}
                 />
                 <CustomField
                     onChange = {handleChange}
                     select
                     label = 'Type of dish'
-                    value = {dishes.typeOfDish}
-                    name = 'typeOfDish'
-                    error = {submited && isError.typeOfDish}
+                    value = {dishes.type}
+                    name = 'type'
+                    error = {submited && isError.type}
                 >
                     <MenuItem value = 'pizza'
                         children = 'Pizza'
@@ -110,17 +110,17 @@ export default function StartPage(){
             
             <Collapse
                 sx = {{m:3}}
-                in = {Boolean(dishes.typeOfDish)}
+                in = {Boolean(dishes.type)}
                 orientation = 'horizontal'
             >
-                {dishes.typeOfDish === 'pizza' && <Box sx = {{'&>*': {mx: 2, mb: 1}}}> 
+                {dishes.type === 'pizza' && <Box sx = {{'&>*': {mx: 2, mb: 1}}}> 
                     <CustomField
                         onChange = {handleExParam}
                         label = 'Number of slices'
                         inputProps = {{type: 'number', min: '1'}}
-                        value = {exParams.numOfSlices}    
-                        name = 'numOfSlices'
-                        error = {submited && isError.numOfSlices}
+                        value = {exParams.no_of_slices}    
+                        name = 'no_of_slices'
+                        error = {submited && isError.no_of_slices}
                     />
                     <CustomField
                         InputProps = {{endAdornment: 'cm'}}
@@ -131,7 +131,7 @@ export default function StartPage(){
                         error = {submited && isError.diameter}
                     />
                 </Box>}
-                {dishes.typeOfDish === 'soup' && 
+                {dishes.type === 'soup' && 
                 <Box sx = {{position: 'relative', mt: 3}}>
                     <Typography
                         children = 'Spiciness scale'
@@ -145,19 +145,19 @@ export default function StartPage(){
                         sx = {{minWidth: '220px'}}
                         valueLabelDisplay = 'on'
                         max = {10}
-                        value = {exParams.spicinessScale}
-                        name = 'spicinessScale'
+                        value = {exParams.spiciness_scale}
+                        name = 'spiciness_scale'
                         onChange = {handleExParam}
                     />
                 </Box>}
-                {dishes.typeOfDish === 'sandwich' && 
+                {dishes.type === 'sandwich' && 
                 <CustomField
                 onChange = {handleExParam}
                 inputProps = {{type: 'number', min: '1'}}
                 label = 'Number of slices of bread'
-                value = {exParams.slicesOfBread}
-                name = 'slicesOfBread'
-                error = {submited && isError.slicesOfBread}
+                value = {exParams.slices_of_bread}
+                name = 'slices_of_bread'
+                error = {submited && isError.slices_of_bread}
                 />}
             </Collapse>
             <Button

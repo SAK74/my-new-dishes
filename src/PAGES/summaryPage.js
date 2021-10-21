@@ -19,8 +19,8 @@ export default function SummaryPage(){
             secondary = {val[1]}
         />);
         renderHistory = sendedOrders.map((order, index) => <Paper key = {index} component = {List}>
-            {Object.entries(order).map(val => <ListItem>
-                <ListItemText key = {val[0]} sx = {{m:0}}
+            {Object.entries(order).map(val => <ListItem key = {val[0]} >
+                <ListItemText sx = {{m:0}}
                     primary = {`${val[0]}:`}
                     secondary = {val[1]}
                 />
@@ -34,6 +34,7 @@ export default function SummaryPage(){
             <CardHeader 
                 title = 'Upss... request is failed' 
                 subheader = {error}
+                subheaderTypographyProps = {{color: 'error.main'}}
             />
         </Card>
         <Button component = {Link} to = '/confirm' children = 'please try again ' />

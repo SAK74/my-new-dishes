@@ -2,19 +2,27 @@ import { configureStore, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 const initialOrder = {
     name: "",
-    preparationTime: "00:00:00",
-    typeOfDish: ''
+    preparation_time: "00:00:00",
+    type: ''
 }
 
 export const sendRequest =  createAsyncThunk('sendRequest', async (_, {getState}) => {
-    const resp = await fetch('https://jsonplaceholder.typicode.com/posts', {
+    const resp = await fetch('https://frosty-wood-6558.getsandbox.com/dishes', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(getState().order)
     });
-    if (!resp.ok) throw new Error(`error... ${resp.url} status: ${resp.status} ${resp.statusText}`)
+    if (resp && !resp.ok){
+        const [mess] = Object.entries(await resp.json());
+        let err;
+        switch(resp.status){
+            case 400: err = `Bad request! ${mess[0].toUpperCase()}: ${mess[1]}`; break;
+            default: err = `${resp.url} status: ${resp.status} ${resp.statusText}`;
+        }
+        throw new Error(`Error... ${err}`);
+    } 
     return resp.json();
 });
 
