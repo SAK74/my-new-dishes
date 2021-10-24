@@ -1,4 +1,5 @@
 import { configureStore, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const initialOrder = {
     name: "",
@@ -6,25 +7,49 @@ const initialOrder = {
     type: ''
 }
 
-export const sendRequest =  createAsyncThunk('sendRequest', async (_, {getState}) => {
-    const resp = await fetch('https://frosty-wood-6558.getsandbox.com/dishes', {
+export const sendRequest =  createAsyncThunk('sendRequest', (_, {getState}) => {
+    return axios({
+        url: 'https://frosty-wood-6558.getsandbox.com/dishes',
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-type': 'application/json'
         },
-        body: JSON.stringify(getState().order)
+        data: getState().order,
+    })
+    .then(resp => {
+        return resp.data;
+    })
+    .catch(err => {
+        let mess = '';
+        if (err.response) {
+            console.log('response: ',err.response);
+            for (const [key, val] of Object.entries(err.response.data)) mess += `${key.toUpperCase()}: ${val}`;
+        } else if (err.request){
+            console.log('request: ', err.request);
+            mess = err.request;
+        } else mess = err;
+        return Promise.reject(mess);
     });
-    if (!resp.ok){
-        const [mess] = Object.entries(await resp.json());
-        let err = `${mess[0].toUpperCase()}: ${mess[1]}`;
-        switch(resp.status){
-            case 400: err = 'Bad request! ' + err; break;
-            // ...
-            default: err = `${resp.status} ${resp.statusText} ` + err;
-        }
-        throw new Error(`Error... ${err}`);
-    }
-    return resp.json();
+    
+    // const resp = await fetch('https://frosty-wood-6558.getsandbox.com/dishes', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(getState().order)
+    // });
+    // if (resp && !resp.ok){
+    //     const [mess] = Object.entries(await resp.json());
+    //     let err = `${mess[0].toUpperCase()}: ${mess[1]}`;
+    //     switch(resp.status){
+    //         case 400: err = 'Bad request! ' + err; break;
+    //         // ...
+    //         default: err = `${resp.status} ${resp.statusText} ` + err;
+    //     }
+    //     console.log(resp.status, resp.statusText);
+    //     throw new Error(`Error... ${err}`);
+    // }
+    // return resp.json();
 });
 
 const disherSlice = createSlice({
