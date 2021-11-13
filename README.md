@@ -4,4 +4,4 @@ This project based on ReactJS, with Redux as global state. Switching between sin
 
 Data input is controlled and verificated about requred & validate entries. After confirmed with user data is sending with REST API to target server and is displayed response result with possibility review history of sended orders.
 
-Modified handled input data with react-final-form.
+Modified input data handle with react-final-form.
