@@ -45,8 +45,7 @@ export default function StartPage(){
     const combineCheck = value => [checkFills, checkNaN].reduce((error, validator) => error || validator(value), undefined);
 
     // initialize form with ex parameters (dependently with type of dish)
-    const handleTypeChange = initialize => ev => {
-        const value = ev.target.value;
+    const handleTypeChange = initialize => ({target: {value}}) => {
         const newParam = value === 'pizza' ? {no_of_slices: 1, diameter: 0} : 
             value === 'soup' ? {spiciness_scale: 1} : {slices_of_bread: 1};
         initialize(({name, preparation_time, type}) => ({name, preparation_time, type, ...newParam}));
@@ -54,8 +53,10 @@ export default function StartPage(){
 
     return(
         <Form onSubmit = {onSubmit}
+            // subscription = {{values: true, modified: true}}
             initialValues = {{name, preparation_time, type, ...other}}
-            render = {({handleSubmit, values, form}) => <Box 
+            render = {({handleSubmit, values, form, ...rest}) => {
+            return <Box 
                     component = 'form' onSubmit = {handleSubmit} noValidate
                     sx = {{display: 'flex', alignItems: 'center', flexDirection: 'column', p: 3}}
                 >
@@ -136,12 +137,23 @@ export default function StartPage(){
                             label = 'Number of slices of bread'
                         />}
                     </Collapse>
-                    <Button
-                        type = 'submit'
-                        children = 'Ok'
-                        variant = 'outlined'
-                    />
-                </Box>
+                    <Stack direction = 'row' sx = {{justifyContent: 'center'}} spacing = {6}>
+                        <Button children = "reset all" variant = 'outlined' 
+                            disabled = {rest.pristine}
+                            onClick = {() => form.reset({
+                                name: "",
+                                preparation_time: "00:00:00",
+                                type: ''
+                            })}
+                        />
+                        <Button
+                            type = 'submit'
+                            children = 'Ok'
+                            variant = 'outlined'
+                            disabled = {rest.hasValidationErrors}
+                        />
+                    </Stack>
+                </Box>}
             }    
         />
     )
