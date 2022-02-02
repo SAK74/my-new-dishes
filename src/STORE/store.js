@@ -7,7 +7,7 @@ const initialOrder = {
     type: ''
 }
 
-export const sendRequest =  createAsyncThunk('sendRequest', (_, {getState}) => {
+export const sendRequest = createAsyncThunk('sendRequest', (_, { getState }) => {
     return axios({
         url: 'https://frosty-wood-6558.getsandbox.com/dishes',
         method: 'POST',
@@ -16,21 +16,23 @@ export const sendRequest =  createAsyncThunk('sendRequest', (_, {getState}) => {
         },
         data: getState().order,
     })
-    .then(resp => {
-        return resp.data;
-    })
-    .catch(err => {
-        let mess = '';
-        if (err.response) {
-            console.log('response: ',err.response);
-            for (const [key, val] of Object.entries(err.response.data)) mess += `${key.toUpperCase()}: ${val}`;
-        } else if (err.request){
-            console.log('request: ', err.request);
-            mess = err.request;
-        } else mess = err;
-        return Promise.reject(mess);
-    });
-    
+        .then(resp => {
+            return resp.data;
+        })
+        .catch(err => {
+            let mess = '';
+            if (err.response) {
+                console.log('response: ', err.response);
+                for (const [key, val] of Object.entries(err.response.data)) {
+                    mess += `${key.toUpperCase()}: ${val}`;
+                }
+            } else if (err.request) {
+                console.log('request: ', err.request);
+                mess = err.request;
+            } else mess = err;
+            return Promise.reject(mess);
+        });
+
     // const resp = await fetch('https://frosty-wood-6558.getsandbox.com/dishes', {
     //     method: 'POST',
     //     headers: {
@@ -54,29 +56,29 @@ export const sendRequest =  createAsyncThunk('sendRequest', (_, {getState}) => {
 
 const disherSlice = createSlice({
     name: 'dishes',
-    initialState:{
+    initialState: {
         order: initialOrder,
         status: 'iddle',
         error: null,
         sendedOrders: []
     },
-    reducers:{
+    reducers: {
         addOrder: (state, action) => {
             state.order = action.payload;
             state.status = 'iddle';
         },
     },
-    extraReducers:{
+    extraReducers: {
         [sendRequest.fulfilled]: (state, action) => {
             state.status = 'complete';
             state.sendedOrders.push(action.payload);
         },
-        [sendRequest.pending]: (state) => {state.status = 'pending'},
+        [sendRequest.pending]: (state) => { state.status = 'pending' },
         [sendRequest.rejected]: (state, action) => {
             state.status = 'error';
             state.error = action.error.message;
         }
     }
 });
-export const {addOrder} = disherSlice.actions;
-export default configureStore({reducer: disherSlice.reducer});
+export const { addOrder } = disherSlice.actions;
+export default configureStore({ reducer: disherSlice.reducer });
