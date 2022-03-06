@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.js": "/new-dishes-service/static/js/main.91ace063.chunk.js",
-    "main.js.map": "/new-dishes-service/static/js/main.91ace063.chunk.js.map",
-    "runtime-main.js": "/new-dishes-service/static/js/runtime-main.89bf8259.js",
-    "runtime-main.js.map": "/new-dishes-service/static/js/runtime-main.89bf8259.js.map",
-    "static/js/2.1f0f614e.chunk.js": "/new-dishes-service/static/js/2.1f0f614e.chunk.js",
-    "static/js/2.1f0f614e.chunk.js.map": "/new-dishes-service/static/js/2.1f0f614e.chunk.js.map",
-    "index.html": "/new-dishes-service/index.html",
-    "static/js/2.1f0f614e.chunk.js.LICENSE.txt": "/new-dishes-service/static/js/2.1f0f614e.chunk.js.LICENSE.txt"
+    "main.js": "/my-new-dishes/static/js/main.91ace063.chunk.js",
+    "main.js.map": "/my-new-dishes/static/js/main.91ace063.chunk.js.map",
+    "runtime-main.js": "/my-new-dishes/static/js/runtime-main.09c19d5a.js",
+    "runtime-main.js.map": "/my-new-dishes/static/js/runtime-main.09c19d5a.js.map",
+    "static/js/2.1f0f614e.chunk.js": "/my-new-dishes/static/js/2.1f0f614e.chunk.js",
+    "static/js/2.1f0f614e.chunk.js.map": "/my-new-dishes/static/js/2.1f0f614e.chunk.js.map",
+    "index.html": "/my-new-dishes/index.html",
+    "static/js/2.1f0f614e.chunk.js.LICENSE.txt": "/my-new-dishes/static/js/2.1f0f614e.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.89bf8259.js",
+    "static/js/runtime-main.09c19d5a.js",
     "static/js/2.1f0f614e.chunk.js",
     "static/js/main.91ace063.chunk.js"
   ]
